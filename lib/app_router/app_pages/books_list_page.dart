@@ -1,19 +1,10 @@
-part of 'i_app_page.dart';
+import 'package:flutter/material.dart';
 
-class BooksListAppPage implements IAppPage {
-  @override
-  Page get page => BooksListPage();
+import '../../ui/pages/books_list_page/books_list_screen.dart';
+import '../app_page.dart';
+import '../app_page_url.dart';
 
-  @override
-  PagePath get pagePath => PagePath.booksList;
-
-  @override
-  Map<String, String> get queryParameters => {};
-}
-
-class BooksListPage extends Page {
-  BooksListPage() : super(key: ValueKey('bookslist'), restorationId: 'bookslist');
-
+class AppPageBookList extends AppPage {
   @override
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
@@ -23,4 +14,10 @@ class BooksListPage extends Page {
       },
     );
   }
+
+  @override
+  AppPageUrl get pageUrl => AppPageUrl.booksList;
+
+  @override
+  Map<String, String> get queryParameters => {};
 }

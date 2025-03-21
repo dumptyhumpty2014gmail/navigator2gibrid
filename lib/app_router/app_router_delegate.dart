@@ -1,13 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:navigator2gibrid/app_router/app_pages/book_page.dart';
+import 'package:navigator2gibrid/app_router/app_pages/books_list_page.dart';
+import 'package:navigator2gibrid/app_router/app_pages/login_page.dart';
+import 'package:navigator2gibrid/app_router/app_pages/start_splash_page.dart';
 
 import '../main_vm.dart';
-import 'app_configurations/i_app_configuration.dart';
-import 'app_pages/i_app_page.dart';
+import 'app_configuration.dart';
+import 'app_page.dart';
+import 'app_page_url.dart';
 
 part 'app_back_btn_dispatcher.dart';
+part 'app_route_information_parser.dart';
 
-class AppRouterDelegate extends RouterDelegate<IAppConfiguration> with ChangeNotifier, PopNavigatorRouterDelegateMixin<IAppConfiguration> {
+class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppConfiguration> {
   final MainVM vm;
   @override
   final GlobalKey<NavigatorState> navigatorKey;
@@ -31,60 +37,62 @@ class AppRouterDelegate extends RouterDelegate<IAppConfiguration> with ChangeNot
     ///можно написать короче, но для лучшего понимания
     if (_isLogin == null && vm.isLogin == false) {
       //приложение запустилось, но мы не залогинены, переходим на страницу логина и очищаем текущую конфигурацию
-      setNewRoutePath(LoginAppConfiguration());
+      setNewRoutePath(AppConfiguration(pages: [AppPageLogin()]));
     } else if (_isLogin == true && vm.isLogin == false) {
       //мы были залогинены, но сейчас не залогинены, переходим на страницу логина
-      setNewRoutePath(LoginAppConfiguration());
+      setNewRoutePath(AppConfiguration(pages: [AppPageLogin()]));
     } else if (_isLogin == false && vm.isLogin == true) {
       //мы не были залогинены, но залогинились
-      setNewRoutePath(BooksListAppConfiguration());
+      setNewRoutePath(AppConfiguration(pages: [AppPageBookList()]));
     } else if (_isLogin == null && vm.isLogin == true) {
       //приложение запустилось, мы залогинены, переходим на сохраненную или на полученную из браузера конфигурацию
-      if (_curConfiguration is StartAppConfiguration) {
-        setNewRoutePath(BooksListAppConfiguration());
+      if ((_currentConfiguration?.pages.length ?? 0) == 1 && _currentConfiguration?.pages[0] is AppPageStart) {
+        setNewRoutePath(AppConfiguration(pages: [AppPageBookList()]));
       }
     }
     _isLogin = vm.isLogin;
   }
 
-  IAppConfiguration? _curConfiguration = StartAppConfiguration();
+  AppConfiguration? _currentConfiguration = AppConfiguration(pages: []);
   @override
-  IAppConfiguration? get currentConfiguration => _curConfiguration;
-  List<Page<dynamic>> _pages = [];
+  AppConfiguration? get currentConfiguration => _currentConfiguration;
+  List<AppPage> _pages = [AppPageStart()];
   List<MaterialPage> get pages => List.unmodifiable(_pages);
   @override
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
 
-      pages: _pages.isEmpty ? [StartAppPage().page] : List.of(_pages.map((e) => e)),
+      pages: _pages.isEmpty ? [AppPageStart()] : List.of(_pages.map((e) => e)),
       onDidRemovePage: (Page route) {
         //срабатывает даже когда мы убираем в списке какую-то страницу
 
         if (kDebugMode) {
           print('onDidRemovePage Route removed: ${route.toString()}');
         }
-
-        ///для отлавливания не декларативного перехода
-        if (_curConfiguration is BooksBookAppConfiguration && route is BookPage) {
-          setNewRoutePath(BooksListAppConfiguration());
+        //TODO проблема: срабатывает на изменение страниц. к примеру, на "удаление" стартовой при выводе login или при иных заменах
+        ///для отлавливания не декларативного перехода pop
+        if ((_currentConfiguration?.pages.length ?? 0) <= 1 || route is! AppPageStart) {
+          //пока ничего не делаем
+        } else {
+          // setNewRoutePath(AppConfiguration(pages: _pages.sublist(0, _pages.length - 1)));
         }
       },
     );
   }
 
   @override
-  Future<void> setNewRoutePath(IAppConfiguration configuration) async {
+  Future<void> setNewRoutePath(AppConfiguration configuration) async {
     if (kDebugMode) {
       print('setNewRoutePath ${configuration.runtimeType}');
     }
-    if (configuration is StartAppConfiguration) {
+    if (configuration.pages.length == 1 && configuration.pages[0] is AppPageStart) {
       if (_isLogin != null) {
         return;
       }
     }
-    _curConfiguration = configuration;
-    _pages = [...configuration.getPages().map((e) => e.page)];
+    _currentConfiguration = configuration;
+    _pages = [...configuration.pages];
     notifyListeners();
   }
 

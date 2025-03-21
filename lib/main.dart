@@ -1,16 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-//import 'package:navigator2web/app_router/app_route_information_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'app_router/app_configurations/i_app_configuration.dart';
-import 'app_router/app_pages/i_app_page.dart';
 import 'app_router/app_router_delegate.dart';
 import 'data/local_repository.dart';
 import 'main_vm.dart';
-
-part 'app_router/app_route_information_parser.dart';
 
 void main() {
   ///чтобы в адрес не добавлялся символ #

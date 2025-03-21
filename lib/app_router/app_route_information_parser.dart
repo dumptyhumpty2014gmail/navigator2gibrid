@@ -1,8 +1,8 @@
-part of '../main.dart';
+part of 'app_router_delegate.dart';
 
-class AppRouteInformationParser extends RouteInformationParser<IAppConfiguration> {
+class AppRouteInformationParser extends RouteInformationParser<AppConfiguration> {
   @override
-  Future<IAppConfiguration> parseRouteInformation(RouteInformation routeInformation) async {
+  Future<AppConfiguration> parseRouteInformation(RouteInformation routeInformation) async {
     //Срабатывает конкретно, когда запускается урл (или происходит рефреш) в браузере
     //срабатывает, так же,  когда нажимают стрелку "назад"(или "вперед")
     //и запускает setNewRoutePath, куда передает "конфигурацию"
@@ -19,28 +19,31 @@ class AppRouteInformationParser extends RouteInformationParser<IAppConfiguration
 
     ///ловим только корректные пути и возвращаем конфигурацию
     if (uri.pathSegments.length == 2) {
-      if (uri.pathSegments[1] == PagePath.book.path && uri.pathSegments[0] == PagePath.booksList.path && uri.queryParameters.containsKey('book')) {
-        return BooksBookAppConfiguration(id: int.parse(uri.queryParameters['book']!));
+      if (uri.pathSegments[1] == AppPageUrl.book.path &&
+          uri.pathSegments[0] == AppPageUrl.booksList.path &&
+          uri.queryParameters.containsKey('bookid')) {
+        //TODO наименование параметра нужно, наверное, через статик сделать
+        return AppConfiguration(pages: [AppPageBookList(), AppPageBook(id: int.parse(uri.queryParameters['bookid']!))]);
       }
     } else if (uri.pathSegments.length == 1) {
       final segment0 = uri.pathSegments[0];
-      if (segment0 == PagePath.booksList.path) {
-        return BooksListAppConfiguration();
-      } else if (segment0 == PagePath.login.path) {
-        return LoginAppConfiguration();
+      if (segment0 == AppPageUrl.booksList.path) {
+        return AppConfiguration(pages: [AppPageBookList()]);
+      } else if (segment0 == AppPageUrl.login.path) {
+        return AppConfiguration(pages: [AppPageLogin()]);
       }
     }
-    return StartAppConfiguration();
+    return AppConfiguration(pages: [AppPageStart()]);
   }
 
   @override
-  RouteInformation? restoreRouteInformation(IAppConfiguration configuration) {
+  RouteInformation? restoreRouteInformation(AppConfiguration configuration) {
     //срабатывает каждый раз, когда меняется геттер currentConfiguration
     //из присланной конфигурации формирует url
     String url = '';
     Map<String, dynamic> queryParameters = {};
-    for (var page in configuration.getPages()) {
-      url += '/${page.pagePath.path}';
+    for (var page in configuration.pages) {
+      url += '/${page.pageUrl.path}';
       queryParameters.addAll(page.queryParameters);
     }
 

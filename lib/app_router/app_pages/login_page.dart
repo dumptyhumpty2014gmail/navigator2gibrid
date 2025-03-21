@@ -1,19 +1,10 @@
-part of 'i_app_page.dart';
+import 'package:flutter/material.dart';
 
-class LoginAppPage implements IAppPage {
-  @override
-  Page get page => LoginPage();
+import '../../ui/pages/login_page/login_screen.dart';
+import '../app_page.dart';
+import '../app_page_url.dart';
 
-  @override
-  PagePath get pagePath => PagePath.login;
-
-  @override
-  Map<String, String> get queryParameters => {};
-}
-
-class LoginPage extends Page {
-  LoginPage() : super(key: ValueKey(PagePath.login.path), restorationId: PagePath.login.path);
-
+class AppPageLogin extends AppPage {
   @override
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
@@ -23,4 +14,10 @@ class LoginPage extends Page {
       },
     );
   }
+
+  @override
+  AppPageUrl get pageUrl => AppPageUrl.login;
+
+  @override
+  Map<String, String> get queryParameters => {};
 }

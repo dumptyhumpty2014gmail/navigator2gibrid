@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:navigator2gibrid/app_router/app_configuration.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_router/app_configurations/i_app_configuration.dart';
+import '../../../app_router/app_pages/books_list_page.dart';
 import '../../../app_router/app_router_delegate.dart';
 import '../../../data/books_repository.dart';
 import '../../../domain/book.dart';
@@ -25,10 +26,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Стрелка выше дефолтная и вообще-то не вписывается в декларативную концепцию'),
+            //Text('Стрелка выше дефолтная и вообще-то не вписывается в декларативную концепцию'),
             ElevatedButton(
               onPressed: () {
-                context.read<AppRouterDelegate>().setNewRoutePath(BooksListAppConfiguration());
+                //TODO сделать через addPage
+                context.read<AppRouterDelegate>().setNewRoutePath(AppConfiguration(pages: [AppPageBookList()]));
               },
               child: Text('Back декларативный'),
             ),

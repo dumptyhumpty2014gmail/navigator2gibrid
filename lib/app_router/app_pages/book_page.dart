@@ -1,23 +1,12 @@
-part of 'i_app_page.dart';
+import 'package:flutter/material.dart';
 
-class BookAppPage implements IAppPage {
+import '../../ui/pages/book_page/book_screen.dart';
+import '../app_page.dart';
+import '../app_page_url.dart';
+
+class AppPageBook extends AppPage {
   final int? id;
-
-  BookAppPage({required this.id});
-  @override
-  Page get page => BookPage(id: id);
-
-  @override
-  PagePath get pagePath => PagePath.book;
-
-  @override
-  Map<String, String> get queryParameters => {'book': id.toString()};
-}
-
-class BookPage extends Page {
-  final int? id;
-  BookPage({this.id}) : super(key: ValueKey('book_$id'), restorationId: 'book_$id');
-
+  AppPageBook({required this.id});
   @override
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
@@ -27,4 +16,10 @@ class BookPage extends Page {
       },
     );
   }
+
+  @override
+  AppPageUrl get pageUrl => AppPageUrl.book;
+
+  @override
+  Map<String, String> get queryParameters => {'bookid': id.toString()};
 }
