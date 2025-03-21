@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:navigator2gibrid/app_router/app_configuration.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_router/app_pages/books_list_page.dart';
 import '../../../app_router/app_router_delegate.dart';
 import '../../../data/books_repository.dart';
 import '../../../domain/book.dart';
@@ -29,8 +27,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             //Text('Стрелка выше дефолтная и вообще-то не вписывается в декларативную концепцию'),
             ElevatedButton(
               onPressed: () {
-                //TODO сделать через addPage
-                context.read<AppRouterDelegate>().setNewRoutePath(AppConfiguration(pages: [AppPageBookList()]));
+                //context.read<AppRouterDelegate>().setNewRoutePath(AppConfiguration(pages: [AppPageBookList()]));
+                context.read<AppRouterDelegate>().back();
               },
               child: Text('Back декларативный'),
             ),

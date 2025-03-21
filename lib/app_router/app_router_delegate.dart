@@ -103,4 +103,18 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
     }
     return super.popRoute();
   }
+
+  void addPage(AppPage nextPage) {
+    if ((_currentConfiguration?.pages ?? []).contains(nextPage)) return;
+    _pages = [..._currentConfiguration!.pages, nextPage];
+    _currentConfiguration = AppConfiguration(pages: _pages);
+    notifyListeners();
+  }
+
+  void back() {
+    if (_pages.length == 1) return;
+    _pages = [..._currentConfiguration!.pages.sublist(0, _currentConfiguration!.pages.length - 1)];
+    _currentConfiguration = AppConfiguration(pages: _pages);
+    notifyListeners();
+  }
 }

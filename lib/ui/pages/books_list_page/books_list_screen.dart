@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:navigator2gibrid/app_router/app_configuration.dart';
-import 'package:navigator2gibrid/app_router/app_pages/books_list_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app_router/app_pages/book_page.dart';
@@ -40,7 +38,8 @@ class _BooksListScreenState extends State<BooksListScreen> {
                     subtitle: Text(book.author),
                     onTap:
                         () => {
-                          context.read<AppRouterDelegate>().setNewRoutePath(AppConfiguration(pages: [AppPageBookList(), AppPageBook(id: book.id)])),
+                          //context.read<AppRouterDelegate>().setNewRoutePath(AppConfiguration(pages: [AppPageBookList(), AppPageBook(id: book.id)])),
+                          context.read<AppRouterDelegate>().addPage(AppPageBook(id: book.id)),
                         },
                   ),
                 ),
