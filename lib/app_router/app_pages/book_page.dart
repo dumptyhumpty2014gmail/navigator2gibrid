@@ -21,5 +21,7 @@ class AppPageBook extends AppPage {
   AppPageUrl get pageUrl => AppPageUrl.book;
 
   @override
-  Map<String, String> get queryParameters => {'bookid': id.toString()};
+  Map<String, String> get queryParameters => {bookidParameterName: id.toString()};
+
+  static const String bookidParameterName = 'bookid';
 }

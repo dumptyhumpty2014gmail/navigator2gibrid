@@ -21,9 +21,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppConfiguration>
     if (uri.pathSegments.length == 2) {
       if (uri.pathSegments[1] == AppPageUrl.book.path &&
           uri.pathSegments[0] == AppPageUrl.booksList.path &&
-          uri.queryParameters.containsKey('bookid')) {
-        //TODO наименование параметра нужно, наверное, через статик сделать
-        return AppConfiguration(pages: [AppPageBookList(), AppPageBook(id: int.parse(uri.queryParameters['bookid']!))]);
+          uri.queryParameters.containsKey(AppPageBook.bookidParameterName)) {
+        return AppConfiguration(pages: [AppPageBookList(), AppPageBook(id: int.parse(uri.queryParameters[AppPageBook.bookidParameterName]!))]);
       }
     } else if (uri.pathSegments.length == 1) {
       final segment0 = uri.pathSegments[0];
