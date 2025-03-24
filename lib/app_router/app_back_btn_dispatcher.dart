@@ -9,7 +9,7 @@ class AppBackBtnDispatcher extends RootBackButtonDispatcher {
   Future<bool> didPopRoute() async {
     ///здесь можно отлавливать выход из приложения и предлагать диалог "хотите выйти?" на андроиде
     if (kDebugMode) {
-      print('didPopRoute');
+      print('AppBackBtnDispatcher');
     }
     return _routerDelegate.popRoute();
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../ui/pages/book_page/book_screen.dart';
@@ -12,7 +13,16 @@ class AppPageBook extends AppPage {
     return MaterialPageRoute(
       settings: this,
       builder: (BuildContext context) {
-        return BookDetailsScreen(id: id);
+        return PopScope(
+          ///для защиты от pop
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (kDebugMode) {
+              print('didPop $didPop result $result');
+            }
+          },
+          child: BookDetailsScreen(id: id),
+        );
       },
     );
   }

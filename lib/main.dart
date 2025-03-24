@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:provider/provider.dart';
@@ -42,12 +43,19 @@ class _BooksAppState extends State<BooksApp> {
       value: vm,
       child: ChangeNotifierProvider<AppRouterDelegate>.value(
         value: _routerDelegate,
-        child: MaterialApp.router(
-          title: 'Books App',
-          routerDelegate: _routerDelegate,
-          routeInformationParser: _routeInformationParser,
-          backButtonDispatcher: AppBackBtnDispatcher(_routerDelegate),
-          //routeInformationProvider: _routerInformationProvider,
+        child: PopScope(
+          onPopInvokedWithResult: (didPop, result) {
+            if (kDebugMode) {
+              print('didPop $didPop result $result');
+            }
+          },
+          child: MaterialApp.router(
+            title: 'Books App',
+            routerDelegate: _routerDelegate,
+            routeInformationParser: _routeInformationParser,
+            backButtonDispatcher: AppBackBtnDispatcher(_routerDelegate),
+            //routeInformationProvider: _routerInformationProvider,
+          ),
         ),
       ),
     );

@@ -70,13 +70,13 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
         if (kDebugMode) {
           print('onDidRemovePage Route removed: ${route.toString()}');
         }
-        //TODO проблема: срабатывает на изменение страниц. к примеру, на "удаление" стартовой при выводе login или при иных заменах
-        ///для отлавливания не декларативного перехода pop
-        if ((_currentConfiguration?.pages.length ?? 0) <= 1 || route is! AppPageStart) {
-          //пока ничего не делаем
-        } else {
-          // setNewRoutePath(AppConfiguration(pages: _pages.sublist(0, _pages.length - 1)));
-        }
+        //срабатывает на изменение страниц. к примеру, на "удаление" стартовой при выводе login или при иных заменах
+        ///для отлавливания не декларативного перехода pop. Его нужно ловить в отдельном PopScope
+        // if ((_currentConfiguration?.pages.length ?? 0) <= 1 || route is! AppPageStart) {
+        //   //пока ничего не делаем
+        // } else {
+        //   // setNewRoutePath(AppConfiguration(pages: _pages.sublist(0, _pages.length - 1)));
+        // }
       },
     );
   }
