@@ -6,12 +6,11 @@ import '../app_page_url.dart';
 
 class AppPageStart extends AppPage {
   @override
-  Route createRoute(BuildContext context) {
-    return MaterialPageRoute(
+  Route<StartScreen> createRoute(BuildContext context) {
+    return PageRouteBuilder(
       settings: this,
-      builder: (BuildContext context) {
-        return StartScreen();
-      },
+      transitionDuration: const Duration(milliseconds: 0), //стартовый экран без анимации
+      pageBuilder: (context, _, __) => StartScreen(),
     );
   }
 

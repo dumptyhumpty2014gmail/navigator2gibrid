@@ -21,8 +21,8 @@ class BooksApp extends StatefulWidget {
 
 class _BooksAppState extends State<BooksApp> {
   final LocalRepository localRepository = LocalRepository();
-  late final MainVM vm = MainVM(localRepository: localRepository);
-  late final AppRouterDelegate _routerDelegate = AppRouterDelegate(vm: vm);
+  final AppRouterDelegate _router = AppRouterDelegate();
+  late final MainVM vm = MainVM(localRepository: localRepository, router: _router);
   final AppRouteInformationParser _routeInformationParser = AppRouteInformationParser();
   //final AppmRouteInformationProvider _routerInformationProvider = AppmRouteInformationProvider();
   @override
@@ -41,12 +41,12 @@ class _BooksAppState extends State<BooksApp> {
     return ChangeNotifierProvider.value(
       value: vm,
       child: ChangeNotifierProvider<AppRouterDelegate>.value(
-        value: _routerDelegate,
+        value: _router,
         child: MaterialApp.router(
           title: 'Books App',
-          routerDelegate: _routerDelegate,
+          routerDelegate: _router,
           routeInformationParser: _routeInformationParser,
-          backButtonDispatcher: AppBackBtnDispatcher(_routerDelegate),
+          backButtonDispatcher: AppBackBtnDispatcher(_router),
           //routeInformationProvider: _routerInformationProvider,
         ),
       ),
