@@ -17,6 +17,22 @@ class AppRouteInformationParser extends RouteInformationParser<AppConfiguration>
       );
     }
 
+    return getAppConfigurationParseUri(uri);
+  }
+
+  @override
+  RouteInformation? restoreRouteInformation(AppConfiguration configuration) {
+    //срабатывает каждый раз, когда меняется геттер currentConfiguration
+    //из присланной конфигурации формирует url
+    final uri = getUriFromComfiguration(configuration);
+    if (kDebugMode) {
+      print('step PARSER restore ${configuration.toString()} url ${uri.path}');
+    }
+    return RouteInformation(uri: uri);
+  }
+
+  ///вынесено в отдельный метод, чтобы можно было и в мобильных сборках восстанвливать конфигурацию
+  static AppConfiguration getAppConfigurationParseUri(Uri uri) {
     ///ловим только корректные пути и возвращаем конфигурацию
     if (uri.pathSegments.length == 2) {
       if (uri.pathSegments[1] == AppPageUrl.book.path &&
@@ -27,28 +43,22 @@ class AppRouteInformationParser extends RouteInformationParser<AppConfiguration>
     } else if (uri.pathSegments.length == 1) {
       final segment0 = uri.pathSegments[0];
       if (segment0 == AppPageUrl.booksList.path) {
-        return AppConfiguration(pages: [AppPageBookList()]);
+        return AppConfiguration.booksList();
       } else if (segment0 == AppPageUrl.login.path) {
-        return AppConfiguration(pages: [AppPageLogin()]);
+        return AppConfiguration.login();
       }
     }
-    return AppConfiguration(pages: [AppPageStart()]);
+
+    return AppConfiguration.start();
   }
 
-  @override
-  RouteInformation? restoreRouteInformation(AppConfiguration configuration) {
-    //срабатывает каждый раз, когда меняется геттер currentConfiguration
-    //из присланной конфигурации формирует url
+  static Uri getUriFromComfiguration(AppConfiguration configuration) {
     String url = '';
     Map<String, dynamic> queryParameters = {};
     for (var page in configuration.pages) {
       url += '/${page.pageUrl.path}';
       queryParameters.addAll(page.queryParameters);
     }
-
-    if (kDebugMode) {
-      print('step PARSER restore ${configuration.toString()} url $url');
-    }
-    return RouteInformation(uri: Uri(path: url, queryParameters: queryParameters));
+    return Uri(path: url, queryParameters: queryParameters);
   }
 }
