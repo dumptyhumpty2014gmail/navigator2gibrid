@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:navigator2gibrid/platfrom_helpers/i_platform_helpers.dart';
 import 'package:provider/provider.dart';
 
 import 'app_router/app_router_delegate.dart';
@@ -9,7 +9,7 @@ import 'main_vm.dart';
 
 void main() {
   ///чтобы в адрес не добавлялся символ #
-  usePathUrlStrategy();
+  IPlatformHelper().pathUrlStrategy();
   runApp(const BooksApp());
 }
 
