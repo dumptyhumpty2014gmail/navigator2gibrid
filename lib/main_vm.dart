@@ -34,7 +34,7 @@ class MainVM extends ChangeNotifier {
   void redirectLogin({bool isInit = false}) {
     if (_isLogin == true) {
       if (isInit) {
-        router.replace<AppPageStart>(AppConfiguration.booksList());
+        router.replaceAppPage<AppPageStart>(AppConfiguration.booksList());
       } else {
         router.setNewRoutePath(AppConfiguration.booksList());
       }

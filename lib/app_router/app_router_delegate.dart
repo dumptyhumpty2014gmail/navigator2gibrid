@@ -95,7 +95,7 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
     notifyListeners();
   }
 
-  void replace<T>(AppConfiguration configuration) {
+  void replaceAppPage<T extends AppPage>(AppConfiguration configuration) {
     if (_pages.last.runtimeType == T) {
       _pages = [..._currentConfiguration!.pages.sublist(0, _currentConfiguration!.pages.length - 1), ...configuration.pages];
       _currentConfiguration = AppConfiguration(pages: _pages);
