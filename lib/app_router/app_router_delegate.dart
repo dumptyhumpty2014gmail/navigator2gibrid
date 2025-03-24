@@ -74,6 +74,15 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
           print('onDidRemovePage Route removed: ${route.toString()}');
           print('onDidRemovePage last page: ${_pages.last.toString()}');
         }
+
+        ///эксперименты
+        // if (_pages.last.runtimeType == route.runtimeType) {
+        //   if (kDebugMode) {
+        //     print('onDidRemovePage last for remove page: ${_pages.last.toString()}');
+        //     _pages.add(_pages.last);
+        //   }
+        // }
+
         //срабатывает на изменение страниц. к примеру, на "удаление" стартовой при выводе login или при иных заменах
         ///для отлавливания не декларативного перехода pop. Его нужно ловить в отдельном PopScope
         // if ((_currentConfiguration?.pages.length ?? 0) <= 1 || route is! AppPageStart) {
