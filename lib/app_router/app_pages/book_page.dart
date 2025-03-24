@@ -15,7 +15,7 @@ class AppPageBook extends AppPage {
       builder: (BuildContext context) {
         return PopScope(
           ///для защиты от pop
-          canPop: false,
+          canPop: true,
           onPopInvokedWithResult: (didPop, result) {
             if (kDebugMode) {
               print('didPop $didPop result $result');

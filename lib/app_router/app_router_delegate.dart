@@ -57,9 +57,12 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
   @override
   AppConfiguration? get currentConfiguration => _currentConfiguration;
   List<AppPage> _pages = [AppPageStart()];
-  List<MaterialPage> get pages => List.unmodifiable(_pages);
+  List<AppPage> get pages => List.unmodifiable(_pages);
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print('build ${_pages.length}');
+    }
     return Navigator(
       key: navigatorKey,
 
@@ -69,6 +72,7 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
 
         if (kDebugMode) {
           print('onDidRemovePage Route removed: ${route.toString()}');
+          print('onDidRemovePage last page: ${_pages.last.toString()}');
         }
         //срабатывает на изменение страниц. к примеру, на "удаление" стартовой при выводе login или при иных заменах
         ///для отлавливания не декларативного перехода pop. Его нужно ловить в отдельном PopScope
