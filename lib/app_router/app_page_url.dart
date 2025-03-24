@@ -1,5 +1,5 @@
 enum AppPageUrl {
-  startSlash('/'),
+  startSlash(''),
   login('login'),
   base('base'),
   booksList('books'),
