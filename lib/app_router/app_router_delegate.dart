@@ -15,6 +15,7 @@ part 'app_route_information_parser.dart';
 
 class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppConfiguration> {
   final MainVM vm;
+  final transitionDelegate = NoAnimationTransitionDelegate();
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
@@ -65,7 +66,7 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
     }
     return Navigator(
       key: navigatorKey,
-
+      transitionDelegate: transitionDelegate,
       pages: _pages.isEmpty ? [AppPageStart()] : List.of(_pages.map((e) => e)),
       onDidRemovePage: (Page route) {
         //срабатывает даже когда мы убираем в списке какую-то страницу
@@ -129,5 +130,43 @@ class AppRouterDelegate extends RouterDelegate<AppConfiguration> with ChangeNoti
     _pages = [..._currentConfiguration!.pages.sublist(0, _currentConfiguration!.pages.length - 1)];
     _currentConfiguration = AppConfiguration(pages: _pages);
     notifyListeners();
+  }
+}
+
+class NoAnimationTransitionDelegate extends TransitionDelegate<void> {
+  @override
+  Iterable<RouteTransitionRecord> resolve({
+    required List<RouteTransitionRecord> newPageRouteHistory,
+    required Map<RouteTransitionRecord?, RouteTransitionRecord> locationToExitingPageRoute,
+    required Map<RouteTransitionRecord?, List<RouteTransitionRecord>> pageRouteToPagelessRoutes,
+  }) {
+    final results = <RouteTransitionRecord>[];
+
+    for (final pageRoute in newPageRouteHistory) {
+      if (pageRoute.isWaitingForEnteringDecision) {
+        pageRoute.markForAdd();
+      }
+      if (kDebugMode) {
+        print('newPageRouteHistory ${pageRoute.runtimeType}');
+      }
+      results.add(pageRoute);
+    }
+
+    for (final exitingPageRoute in locationToExitingPageRoute.values) {
+      if (exitingPageRoute.isWaitingForExitingDecision) {
+        exitingPageRoute.markForRemove();
+        final pagelessRoutes = pageRouteToPagelessRoutes[exitingPageRoute];
+        if (pagelessRoutes != null) {
+          for (final pagelessRoute in pagelessRoutes) {
+            pagelessRoute.markForRemove();
+          }
+        }
+      }
+      if (kDebugMode) {
+        print('locationToExitingPageRoute ${exitingPageRoute.runtimeType}');
+      }
+      results.add(exitingPageRoute);
+    }
+    return results;
   }
 }
