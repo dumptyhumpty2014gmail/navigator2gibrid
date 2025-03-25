@@ -7,6 +7,8 @@ import '../app_page_url.dart';
 
 class AppPageBook extends AppPage {
   final int? id;
+  @override
+  ValueKey get key => ValueKey('appbook$id');
   AppPageBook({required this.id});
   @override
   Route createRoute(BuildContext context) {

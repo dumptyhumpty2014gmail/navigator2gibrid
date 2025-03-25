@@ -6,6 +6,8 @@ import '../app_page_url.dart';
 
 class AppPageBookList extends AppPage {
   @override
+  ValueKey get key => ValueKey('AppPageBookList');
+  @override
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
       settings: this,

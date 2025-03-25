@@ -6,6 +6,8 @@ import '../app_page_url.dart';
 
 class AppPageLogin extends AppPage {
   @override
+  ValueKey get key => ValueKey('AppPageLogin');
+  @override
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
       settings: this,

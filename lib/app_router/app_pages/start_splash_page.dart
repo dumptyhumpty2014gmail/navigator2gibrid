@@ -6,6 +6,8 @@ import '../app_page_url.dart';
 
 class AppPageStart extends AppPage {
   @override
+  ValueKey get key => const ValueKey('AppPageStart');
+  @override
   Route<StartScreen> createRoute(BuildContext context) {
     return PageRouteBuilder(
       settings: this,
